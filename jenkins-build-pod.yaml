@@ -1,5 +1,7 @@
 apiVersion: v1
 kind: Pod
+metadata:
+  namespaces: jenkins
 spec:
   serviceAccountName: jenkins
   containers:
