@@ -33,6 +33,9 @@ pipeline {
     }
 
     stage("Deploy") {
+      environment {
+        IMAGE_REPO = "asia.gcr.io/${project}/hello-world/${appname}"
+      }
       steps {
         container("kubectl") {
           sh """cat <<EOF | kubectl apply -f -
