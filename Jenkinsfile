@@ -1,4 +1,4 @@
-def builder = "jenkins-agent-gke"
+def BUILDER = "jenkins-agent-gke"
 pipeline {
   agent {
     kubernetes {
@@ -13,12 +13,14 @@ pipeline {
     stage("Build") {
       steps {
         dir("hello-app") {
-          container("gcloud") {
-            // Cheat by using Cloud Build to help us build our container
-            writeFile file: 'key.json', text: readFile(builder)
-            sh "gcloud auth activate-service-account --key-file=key.json"
-            // sh "gcloud builds submit --project ${project} --tag ${IMAGE_REPO}:${IMAGE_TAG} ."
-            sh "gcloud builds submit -t ${params.IMAGE_URL}:${GIT_COMMIT}"
+          withCredentials([file(credentialsId: "${BUILDER}" , variable: "builder")]) {
+            container("gcloud") {
+              // Cheat by using Cloud Build to help us build our container
+              writeFile file: 'key.json', text: readFile(builder)
+              sh "gcloud auth activate-service-account --key-file=key.json"
+              // sh "gcloud builds submit --project ${project} --tag ${IMAGE_REPO}:${IMAGE_TAG} ."
+              sh "gcloud builds submit -t ${params.IMAGE_URL}:${GIT_COMMIT}"
+            }
           }
         }
       }
