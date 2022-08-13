@@ -1,4 +1,7 @@
 def BUILDER = "jenkins-agent-gke"
+def project = "submission-adi-purnomo"
+def appname = "hello-world"
+
 pipeline {
   agent {
     kubernetes {
@@ -12,7 +15,7 @@ pipeline {
   stages {
     stage("Build") {
       environment {
-        IMAGE_REPO = "asia.gcr.io/submission-adi-purnomo/hello-app/"
+        IMAGE_REPO = "asia.gcr.io/{project}/${appname}"
       } 
       steps {
         dir("hello-app") {
@@ -22,7 +25,7 @@ pipeline {
               writeFile file: 'key.json', text: readFile(builder)
               sh "gcloud auth activate-service-account --key-file=key.json"
               // sh "gcloud builds submit --project ${project} --tag ${IMAGE_REPO}:${IMAGE_TAG} ."
-              sh "gcloud builds submit -t ${IMAGE_REPO}:${GIT_COMMIT}"
+              sh "gcloud builds submit --project ${PROJECT} -t ${IMAGE_REPO}:${GIT_COMMIT}"
             }
           }
         }
