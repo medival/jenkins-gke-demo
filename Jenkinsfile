@@ -35,38 +35,7 @@ pipeline {
     stage("Deploy") {
       steps {
         container("kubectl") {
-          sh """cat <<EOF | kubectl apply -f -
-                apiVersion: apps/v1
-                kind: Deployment
-                metadata:
-                  name: hello-app
-                spec:
-                  replicas: 2
-                  selector:
-                    matchLabels:
-                      app: hello-app
-                  template:
-                    metadata:
-                      labels:
-                        app: hello-app
-                    spec:
-                      containers:
-                      - name: hello-app
-                        image: ${IMAGE_REPO}:${GIT_COMMIT}
-                ---
-                apiVersion: v1
-                kind: Service
-                metadata:
-                  name: hello-app
-                spec:
-                  selector:
-                    app: hello-app
-                  ports:
-                    - protocol: TCP
-                      port: 80
-                      targetPort: 8080
-                """
-          sh "kubectl rollout status deployments/hello-app"
+          sh "kubectl get po -A"
         }
       }
     }
