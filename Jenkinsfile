@@ -12,7 +12,7 @@ pipeline {
   stages {
     stage("Build") {
       environment {
-        IMAGE_REPO = "asia-docker.pkg.dev/submission-adi-purnomo/hello-world-images/hello-app"
+        IMAGE_REPO = "asia.gcr.io/submission-adi-purnomo/hello-app/"
       } 
       steps {
         dir("hello-app") {
