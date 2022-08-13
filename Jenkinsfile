@@ -15,7 +15,7 @@ pipeline {
   stages {
     stage("Build") {
       environment {
-        IMAGE_REPO = "asia.gcr.io/${project}/${appname}"
+        IMAGE_REPO = "asia.gcr.io/${project}/hello-world/${appname}"
       } 
       steps {
         dir("hello-app") {
